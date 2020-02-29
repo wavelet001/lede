@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: K2-SSR-PLUS
+name: OpenWrt-CI 
 
 on:
   push:
@@ -56,11 +56,6 @@ jobs:
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
-          # rm -rf feeds/lienol/lienol/ipt2socks
-          # rm -rf feeds/lienol/lienol/shadowsocksr-libev
-          # rm -rf feeds/lienol/lienol/pdnsd-alt
-          # rm -rf feeds/lienol/package/verysync
-          # rm -rf feeds/lienol/lienol/luci-app-verysync
           ./scripts/feeds install -a
 
       - name: Generate configuration file
@@ -101,13 +96,13 @@ jobs:
           # 无论你想要对固件进行怎样的定制, 都需要且只需要修改 EOF 回环内的内容.
           # 
 
-          # 编译K2固件:
+          # 编译x64固件: （编译不同硬件路由器固件在此处修改）
           cat >> .config <<EOF
           CONFIG_TARGET_ramips=y
           CONFIG_TARGET_ramips_mt7620=y
           CONFIG_TARGET_ramips_mt7620_DEVICE_phicomm_psg1218a=y
           EOF
-
+          
           # 固件压缩:
           cat >> .config <<EOF
           CONFIG_TARGET_IMAGES_GZIP=y
@@ -158,7 +153,7 @@ jobs:
           # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
           # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
           # CONFIG_PACKAGE_luci-app-ttyd=y
           # CONFIG_PACKAGE_luci-app-v2ray-server=y
@@ -166,15 +161,7 @@ jobs:
           # CONFIG_PACKAGE_luci-app-webadmin=y
           # CONFIG_PACKAGE_luci-app-wireguard=y
           # CONFIG_PACKAGE_luci-app-wrtbwmon=y
-          # CONFIG_PACKAGE_luci-app-passwall=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ipt2socks=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_haproxy=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_pdnsd=y
-          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_dns2socks=y
-          EOF
+          # EOF
 
           # LuCI主题:
           # cat >> .config <<EOF
@@ -214,7 +201,7 @@ jobs:
 
       - name: Compile firmware
         run: |
-          make -j$(nproc) || make -j11 V=s
+          make -j$(nproc) || make -j99 V=s
           echo "======================="
           echo "Space usage:"
           echo "======================="
